@@ -39,10 +39,18 @@ func (game *game) handleLetter(letter rune) {
 
 func (game *game) handleWord(word string) {
 	game.win = word == game.word.ToString()
+	if !game.win {
+		game.mistakes += 1
+	}
 
 	if game.win || game.mode == Hard {
 		if game.win {
+			// Sets all the guessed letters to true
+			// Required for win condition
 			game.word.SetAll(true)
+			for _, l := range game.word {
+				game.letters.Set(l.Value, true)
+			}
 		}
 
 		game.running = false

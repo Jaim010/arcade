@@ -2,9 +2,9 @@ package game
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
+	"github.com/Jaim010/hangman/pkg/file"
 	"github.com/Jaim010/hangman/pkg/guess"
 	"github.com/Jaim010/hangman/pkg/models"
 	"github.com/Jaim010/hangman/pkg/ui"
@@ -50,14 +50,13 @@ func (game *game) Run() {
 			game.hangman.Print()
 			game.printWord()
 			game.printLetters()
-
 			if game.msg != "" {
 				fmt.Println(game.msg)
 				game.msg = ""
 			}
 			guess, err := guess.GetGuess()
 			if err != nil {
-				log.Fatal(err)
+				continue
 			}
 
 			game.handle(guess)
@@ -71,6 +70,7 @@ func (game *game) Run() {
 		game.printWord()
 		game.printLetters()
 
+		fmt.Printf("The word was: '%s'\n", yellow(game.word.ToString()))
 		if game.win {
 			fmt.Printf("You %s!\n", green("won"))
 		} else {
@@ -85,13 +85,16 @@ func (game *game) Run() {
 
 func (game *game) setup() {
 	game.running = true
+	game.win = false
+	game.msg = ""
 	game.mistakes = 0
 
 	// Get random word
 	game.word = []models.Letter{}
 
 	// Setup word
-	word := strings.ToLower("test")
+	word := file.GetRandomWord()
+	word = strings.ToLower(word)
 	for _, char := range word {
 		game.word = append(game.word, models.Letter{Value: char, Guessed: false})
 	}
