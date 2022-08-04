@@ -1,4 +1,4 @@
-module github.com/Jaim010/hangman
+module github.com/Jaim010/arcade
 
 go 1.18
 

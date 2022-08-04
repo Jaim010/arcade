@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Jaim010/hangman/pkg/file"
-	"github.com/Jaim010/hangman/pkg/guess"
-	"github.com/Jaim010/hangman/pkg/models"
-	"github.com/Jaim010/hangman/pkg/ui"
+	"github.com/Jaim010/arcade/pkg/hangman/components"
+	"github.com/Jaim010/arcade/pkg/hangman/file"
+	"github.com/Jaim010/arcade/pkg/hangman/guess"
+	"github.com/Jaim010/arcade/pkg/hangman/models"
+	"github.com/Jaim010/arcade/pkg/utils/screen"
 	"github.com/fatih/color"
 )
 
@@ -32,7 +33,7 @@ type game struct {
 	letters  models.Letters
 	word     models.Letters
 	mistakes uint8
-	hangman  ui.Hangman
+	hangman  components.Hangman
 	win      bool
 	running  bool
 	msg      string
@@ -44,9 +45,9 @@ func New() game {
 
 func (game *game) Run() {
 	for {
-		game.setup()
+		game.init()
 		for game.running {
-			ui.Clear()
+			screen.Clear()
 			game.hangman.Print()
 			game.printWord()
 			game.printLetters()
@@ -65,7 +66,7 @@ func (game *game) Run() {
 		}
 
 		// Last UI update
-		ui.Clear()
+		screen.Clear()
 		game.hangman.Print()
 		game.printWord()
 		game.printLetters()
@@ -83,7 +84,7 @@ func (game *game) Run() {
 	}
 }
 
-func (game *game) setup() {
+func (game *game) init() {
 	game.running = true
 	game.win = false
 	game.msg = ""
@@ -99,7 +100,7 @@ func (game *game) setup() {
 		game.word = append(game.word, models.Letter{Value: char, Guessed: false})
 	}
 
-	game.hangman = ui.Hangman{}
+	game.hangman = components.Hangman{}
 
 	// Setup guessed letters
 	game.letters = []models.Letter{}

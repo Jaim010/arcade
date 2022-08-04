@@ -3,7 +3,7 @@ package game
 import (
 	"fmt"
 
-	"github.com/Jaim010/hangman/pkg/guess"
+	"github.com/Jaim010/arcade/pkg/hangman/guess"
 )
 
 func (game *game) handle(guess guess.Guess) {
